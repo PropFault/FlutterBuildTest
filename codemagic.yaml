@@ -24,6 +24,10 @@ workflows:
         script: |
           flutter test
         ignore_failure: true
+      - name: Change Android package name
+        script: | 
+          flutter pub add change_app_package_name
+          flutter pub run change_app_package_name:main $PACKAGE_NAME
       - name: Build AAB with Flutter
         script: |
           BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks="$GOOGLE_PLAY_TRACK") + 1))      
