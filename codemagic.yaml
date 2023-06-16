@@ -1,32 +1,33 @@
 workflows:
   android-workflow:
     name: Android Workflow
+    instance_type: mac_mini_m1
     max_build_duration: 120
     environment:
       android_signing:
         - keystore_reference
       groups:
-        - google_play
+        - google_play # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS)
       vars:
-        PACKAGE_NAME: "eu.mtrack.flutterbuildtest"
-        GOOGLE_PLAY_TRACK: alpha
+        PACKAGE_NAME: "eu.mtrack.flutterbuildtest" # <-- Put your package name here
+        GOOGLE_PLAY_TRACK: "alpha"
       flutter: stable
     scripts:
       - name: Set up local.properties
-        script: | 
+        script: |
           echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
       - name: Get Flutter packages
-        script: | 
+        script: |
           flutter packages pub get
       - name: Flutter analyze
-        script: | 
+        script: |
           flutter analyze
       - name: Flutter unit tests
-        script: | 
+        script: |
           flutter test
         ignore_failure: true
       - name: Build AAB with Flutter
-        script: | 
+        script: |
           BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks="$GOOGLE_PLAY_TRACK") + 1))      
           flutter build appbundle --release \
             --build-name=1.0.$BUILD_NUMBER \
@@ -38,7 +39,8 @@ workflows:
     publishing:
       email:
         recipients:
-          - benedikt@fuhrpark.at
+          - user_1@example.com
+          - user_2@example.com
         notify:
           success: true
           failure: false
@@ -48,6 +50,7 @@ workflows:
         submit_as_draft: true
   ios-workflow:
     name: iOS Workflow
+    instance_type: mac_mini_m1
     max_build_duration: 120
     integrations:
       app_store_connect: codemagic
@@ -56,27 +59,29 @@ workflows:
         distribution_type: app_store
         bundle_identifier: eu.mtrack.flutterbuildtest
       vars:
-        APP_ID: 1555555551
+        APP_ID: 1111111111 # <-- Put your APP ID here
       flutter: stable
+      xcode: latest
+      cocoapods: default
     scripts:
       - name: Set up code signing settings on Xcode project
-        script: | 
+        script: |
           xcode-project use-profiles
       - name: Get Flutter packages
-        script: | 
+        script: |
           flutter packages pub get
       - name: Install pods
-        script: | 
+        script: |
           find . -name "Podfile" -execdir pod install \;
       - name: Flutter analyze
-        script: | 
+        script: |
           flutter analyze
       - name: Flutter unit tests
-        script: | 
+        script: |
           flutter test
         ignore_failure: true
-      - name: Flutter build ipa
-        script: | 
+      - name: Flutter build ipa and automatic versioning
+        script: |
           flutter build ipa --release \
             --build-name=1.0.0 \
             --build-number=$(($(app-store-connect get-latest-app-store-build-number "$APP_ID") + 1)) \
@@ -86,18 +91,27 @@ workflows:
       - /tmp/xcodebuild_logs/*.log
       - flutter_drive.log
     publishing:
+      # See the following link for details about email publishing - https://docs.codemagic.io/publishing-yaml/distribution/#email
       email:
         recipients:
-          - benedikt@fuhrpark.at
+          - user_1@example.com
+          - user_2@example.com
         notify:
-          success: true
-          failure: false
+          success: true # To receive a notification when a build succeeds
+          failure: false # To not receive a notification when a build fails
+      slack:
+        # See the following link about how to connect your Slack account - https://docs.codemagic.io/publishing-yaml/distribution/#slack
+        channel: "#builds"
+        notify_on_build_start: true # To receive a notification when a build starts
+        notify:
+          success: true # To receive a notification when a build succeeds
+          failure: false # To not receive a notification when a build fails
       app_store_connect:
         auth: integration
-
+        
         # Configuration related to TestFlight (optional)
         # Note: This action is performed during post-processing.
-        submit_to_testflight: false
+        submit_to_testflight: true
         beta_groups: # Specify the names of beta tester groups that will get access to the build once it has passed beta review.
           - group name 1
           - group name 2
