@@ -48,9 +48,6 @@ workflows:
     integrations:
       app_store_connect: codemagic
     environment:
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: eu.mtrack.flutterbuildtest
       vars:
         APP_ID: 1111111111 # <-- Put your APP ID here
       flutter: stable
