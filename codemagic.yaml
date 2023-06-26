@@ -60,6 +60,7 @@ workflows:
     scripts:
       - name: Change package name
         script: |
+          flutter pub add change_app_package_name
           flutter pub run change_app_package_name:main eu.mtrack.testapp
       - name: Set up code signing settings on Xcode project
         script: | 
