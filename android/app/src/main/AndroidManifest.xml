@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mtrack.eu.testapp">
+    package="eu.mtrack.testapp">
    <application
         android:label="testapp"
         android:name="${applicationName}"
