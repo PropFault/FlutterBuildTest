@@ -55,7 +55,7 @@ workflows:
         distribution_type: app_store
         bundle_identifier: eu.mtrack.testapp
       vars:
-        APP_ID: 123123
+        APP_ID: 6450677329
       flutter: stable
     scripts:
       - name: Set up code signing settings on Xcode project
