@@ -52,8 +52,8 @@ workflows:
       app_store_connect: codemagic
     environment:
       ios_signing:
-        distribution_type: ad_hoc
-        bundle_identifier: eu.mtrack.testapp
+        distribution_type: app_store
+        bundle_identifier: eu.mtrack
       vars:
         APP_ID: 6450677329
       flutter: stable
