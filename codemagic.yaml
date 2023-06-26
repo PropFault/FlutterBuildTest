@@ -45,6 +45,10 @@ workflows:
         notify:
           success: true
           failure: false
+      google_play:
+        credentials: $GC_CREDENTIALS
+        track: internal
+        submit_as_draft: true
   ios-workflow:
     name: iOS Workflow
     max_build_duration: 120
