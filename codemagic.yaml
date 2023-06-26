@@ -58,6 +58,9 @@ workflows:
         APP_ID: 6450677329
       flutter: stable
     scripts:
+      - name: Change package name
+        script: |
+          flutter pub run change_app_package_name:main eu.mtrack.testapp
       - name: Set up code signing settings on Xcode project
         script: | 
           xcode-project use-profiles
