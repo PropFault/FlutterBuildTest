@@ -1,4 +1,4 @@
-package mtrack.eu.flutterbuildtest
+package mtrack.eu.testapp
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -7,7 +7,7 @@ workflows:
       android_signing:
         - codemagic
       vars:
-        PACKAGE_NAME: "eu.mtrack.flutterbuildtest" # <-- Put your package name here
+        PACKAGE_NAME: "eu.mtrack.testapp" # <-- Put your package name here
         GOOGLE_PLAY_TRACK: "alpha"
       flutter: stable
     scripts:
