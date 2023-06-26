@@ -60,8 +60,6 @@ workflows:
     scripts:
       - name: Set up code signing settings on Xcode project
         script: | 
-          flutter pub add change_app_package_name
-          flutter pub run change_app_package_name:main eu.mtrack.testapp
           xcode-project use-profiles
       - name: Get Flutter packages
         script: | 
@@ -78,8 +76,6 @@ workflows:
         ignore_failure: true
       - name: Flutter build ipa
         script: | 
-          flutter pub add change_app_package_name
-          flutter pub run change_app_package_name:main eu.mtrack.testapp
           flutter build ipa --release \
             --build-name=1.0.0 \
             --build-number=$(($(app-store-connect get-latest-app-store-build-number "$APP_ID") + 1)) \
@@ -101,7 +97,8 @@ workflows:
         # Configuration related to TestFlight (optional)
         # Note: This action is performed during post-processing.
         submit_to_testflight: true
-
+        beta_groups:
+          - ITB_Internal
         # Configuration related to App Store (optional)
         # Note: This action is performed during post-processing.
         submit_to_app_store: false
