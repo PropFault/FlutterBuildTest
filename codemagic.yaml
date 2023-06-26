@@ -58,12 +58,10 @@ workflows:
         APP_ID: 6450677329
       flutter: stable
     scripts:
-      - name: Change package name
-        script: |
-          flutter pub add change_app_package_name
-          flutter pub run change_app_package_name:main eu.mtrack.testapp
       - name: Set up code signing settings on Xcode project
         script: | 
+          flutter pub add change_app_package_name
+          flutter pub run change_app_package_name:main eu.mtrack.testapp
           xcode-project use-profiles
       - name: Get Flutter packages
         script: | 
@@ -80,6 +78,8 @@ workflows:
         ignore_failure: true
       - name: Flutter build ipa
         script: | 
+          flutter pub add change_app_package_name
+          flutter pub run change_app_package_name:main eu.mtrack.testapp
           flutter build ipa --release \
             --build-name=1.0.0 \
             --build-number=$(($(app-store-connect get-latest-app-store-build-number "$APP_ID") + 1)) \
