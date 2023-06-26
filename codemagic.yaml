@@ -6,9 +6,11 @@ workflows:
     environment:
       android_signing:
         - codemagic
+      groups:
+        - WL_ITB
       vars:
-        PACKAGE_NAME: "eu.mtrack.testapp" # <-- Put your package name here
-        GOOGLE_PLAY_TRACK: "alpha"
+        PACKAGE_NAME: "eu.mtrack.testapp"
+        GOOGLE_PLAY_TRACK: "internal"
       flutter: stable
     scripts:
       - name: Set up local.properties
@@ -47,7 +49,7 @@ workflows:
           failure: false
       google_play:
         credentials: $GC_CREDENTIALS
-        track: internal
+        track: $GOOGLE_PLAY_TRACK
         submit_as_draft: true
   ios-workflow:
     name: iOS Workflow
