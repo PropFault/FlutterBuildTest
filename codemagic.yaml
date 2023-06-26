@@ -9,7 +9,7 @@ workflows:
       groups:
         - WL_ITB
       vars:
-        PACKAGE_NAME: "eu.mtrack.testapp"
+        PACKAGE_NAME: "eu.mtrack.gps_lib_dev"
         GOOGLE_PLAY_TRACK: "internal"
       flutter: stable
     scripts:
