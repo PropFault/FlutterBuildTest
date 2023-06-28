@@ -24,8 +24,8 @@ workflows:
             CLIENTS=("itb" "flon") # put your clients IDs here
             for CLIENT in ${CLIENTS[@]}; do
                 echo "CLIENT: $CLIENT"
-                build_client("android-workflow", $CLIENT, "WL_${CLIENT}")
-                build_client("ios-workflow", $CLIENT, "WL_${CLIENT}")
+                build_client "android-workflow" $CLIENT "WL_${CLIENT}"
+                build_client "ios-workflow" $CLIENT "WL_${CLIENT}"
             done
   android-workflow:
     name: Android Workflow
