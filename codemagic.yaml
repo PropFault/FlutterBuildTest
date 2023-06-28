@@ -24,7 +24,7 @@ workflows:
                 }' \
                https://api.codemagic.io/builds
           }
-          CLIENTS=("itb" "flon") # put your clients IDs here
+          CLIENTS=("ITB" "FLON") # put your clients IDs here
           for CLIENT in ${CLIENTS[@]}; do
               echo "CLIENT: $CLIENT"
               echo "APP: ${CM_APP_ID} BRANCH: ${CM_BRANCH}"
