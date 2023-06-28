@@ -18,7 +18,7 @@ workflows:
                           "CLIENT_ID": "'$2'"
                       },
                       "groups": [
-                          "$3"
+                          "'$3'"
                       ]
                   }
                 }' \
