@@ -8,7 +8,7 @@ workflows:
       - name: Trigger multiple client builds
         script: | 
           function build_client(){ # $1 -> workflow $2 client_id $3 client_env_group
-            curl --trace-ascii -H "Content-Type: application/json" -H "x-auth-token: ${CM_API_KEY}" \
+            curl --trace-ascii curl.trace -H "Content-Type: application/json" -H "x-auth-token: ${CM_API_KEY}" \
               --data '{
                   "appId": "'${CM_APP_ID}'", 
                   "workflowId": "'$1'",
@@ -31,6 +31,8 @@ workflows:
               build_client "android-workflow" $CLIENT "WL_${CLIENT}"
               build_client "ios-workflow" $CLIENT "WL_${CLIENT}"
           done
+    artifacts:
+      - curl.trace
   android-workflow:
     name: Android Workflow
     instance_type: mac_mini_m1
