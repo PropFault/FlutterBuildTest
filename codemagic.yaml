@@ -11,11 +11,11 @@ workflows:
             curl -H "Content-Type: application/json" -H "x-auth-token: ${CM_API_KEY}" \
               --data '{
                   "appId": "'${CM_APP_ID}'", 
-                  "workflowId": "$1",
-                  "branch": "${CM_BRANCH}",
+                  "workflowId": "'$1'",
+                  "branch": "'${CM_BRANCH}'",
                   "environment": { 
                       "variables": { 
-                          "CLIENT_ID": "$2"
+                          "CLIENT_ID": "'$2'"
                       },
                       "groups": [
                           "$3"
