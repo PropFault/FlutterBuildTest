@@ -1,7 +1,7 @@
 workflows:
   trigger:
     groups:
-      - api
+      api
     name: trigger builds for all clients    
     scripts:
       - name: Trigger multiple client builds
