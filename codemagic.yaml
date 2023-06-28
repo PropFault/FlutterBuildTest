@@ -4,18 +4,18 @@ workflows:
       scripts:
         - name: Trigger multiple client builds
           script: | 
-            function build_client(WORKFLOW_ID, CLIENT_ID, CLIENT_ENV_GROUP){
+            function build_client(){ # $1 -> workflow $2 client_id $3 client_env_group
               curl -H "Content-Type: application/json" -H "x-auth-token: <your-auth-token>" \
                 --data '{
                     "appId": "${CM_PROJECT_ID}", 
-                    "workflowId": "${WORKFLOW_ID}",
+                    "workflowId": "$1",
                     "branch": "${CM_BRANCH}",
                     "environment": { 
                         "variables": { 
-                            "CLIENT_ID": "${CLIENT_ID}"
+                            "CLIENT_ID": "$2"
                         },
                         "groups": [
-                            "${CLIENT_ENV_GROUP}"
+                            "$3"
                         ]
                     }
                   }' \
