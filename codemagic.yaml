@@ -8,7 +8,7 @@ workflows:
       - name: Trigger multiple client builds
         script: | 
           function build_client(){ # $1 -> workflow $2 client_id $3 client_env_group
-            curl -H "Content-Type: application/json" -H "x-auth-token: ${CM_API_KEY}" \
+            curl --verbose -H "Content-Type: application/json" -H "x-auth-token: ${CM_API_KEY}" \
               --data '{
                   "appId": "'${CM_APP_ID}'", 
                   "workflowId": "'$1'",
