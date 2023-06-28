@@ -2,7 +2,7 @@ workflows:
   trigger:
     environment:
       groups:
-        - api
+        - API
     name: trigger builds for all clients    
     scripts:
       - name: Trigger multiple client builds
