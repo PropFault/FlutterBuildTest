@@ -1,36 +1,32 @@
-definitions:
-  scripts:
-    - &build_client(WORKFLOW_ID, CLIENT_ID, CLIENT_ENV_GROUP)
-      name: Queue Build for Client of Workflow_Id
-      script: |
-        curl -H "Content-Type: application/json" -H "x-auth-token: <your-auth-token>" \
-        --data '{
-            "appId": "${CM_PROJECT_ID}", 
-            "workflowId": "${WORKFLOW_ID}",
-            "branch": "${CM_BRANCH}",
-            "environment": { 
-                "variables": { 
-                    "CLIENT_ID": "${CLIENT_ID}"
-                },
-                "groups": [
-                    "${CLIENT_ENV_GROUP}"
-                ]
-            }
-          }' \
-         https://api.codemagic.io/builds
-
 workflows:
   trigger:
       name: trigger builds for all clients    
       scripts:
         - name: Trigger multiple client builds
           script: | 
-              CLIENTS=("itb" "flon") # put your clients IDs here
-              for CLIENT in ${CLIENTS[@]}; do
-                  echo "CLIENT: $CLIENT"  
-                  build_client("android-workflow", CLIENT, "WL_${CLIENT}")
-                  build_client("ios-workflow", CLIENT, "WL_${CLIENT}")
-              done
+            function build_client(WORKFLOW_ID, CLIENT_ID, CLIENT_ENV_GROUP){
+              curl -H "Content-Type: application/json" -H "x-auth-token: <your-auth-token>" \
+                --data '{
+                    "appId": "${CM_PROJECT_ID}", 
+                    "workflowId": "${WORKFLOW_ID}",
+                    "branch": "${CM_BRANCH}",
+                    "environment": { 
+                        "variables": { 
+                            "CLIENT_ID": "${CLIENT_ID}"
+                        },
+                        "groups": [
+                            "${CLIENT_ENV_GROUP}"
+                        ]
+                    }
+                  }' \
+                 https://api.codemagic.io/builds
+            }
+            CLIENTS=("itb" "flon") # put your clients IDs here
+            for CLIENT in ${CLIENTS[@]}; do
+                echo "CLIENT: $CLIENT"
+                build_client("android-workflow", $CLIENT, "WL_${CLIENT}")
+                build_client("ios-workflow", $CLIENT, "WL_${CLIENT}")
+            done
   android-workflow:
     name: Android Workflow
     instance_type: mac_mini_m1
