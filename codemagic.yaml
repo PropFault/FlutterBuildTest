@@ -1,32 +1,34 @@
 workflows:
   trigger:
-      name: trigger builds for all clients    
-      scripts:
-        - name: Trigger multiple client builds
-          script: | 
-            function build_client(){ # $1 -> workflow $2 client_id $3 client_env_group
-              curl -H "Content-Type: application/json" -H "x-auth-token: <your-auth-token>" \
-                --data '{
-                    "appId": "${CM_PROJECT_ID}", 
-                    "workflowId": "$1",
-                    "branch": "${CM_BRANCH}",
-                    "environment": { 
-                        "variables": { 
-                            "CLIENT_ID": "$2"
-                        },
-                        "groups": [
-                            "$3"
-                        ]
-                    }
-                  }' \
-                 https://api.codemagic.io/builds
-            }
-            CLIENTS=("itb" "flon") # put your clients IDs here
-            for CLIENT in ${CLIENTS[@]}; do
-                echo "CLIENT: $CLIENT"
-                build_client "android-workflow" $CLIENT "WL_${CLIENT}"
-                build_client "ios-workflow" $CLIENT "WL_${CLIENT}"
-            done
+    groups:
+      - api
+    name: trigger builds for all clients    
+    scripts:
+      - name: Trigger multiple client builds
+        script: | 
+          function build_client(){ # $1 -> workflow $2 client_id $3 client_env_group
+            curl -H "Content-Type: application/json" -H "x-auth-token: ${CM_API_KEY}" \
+              --data '{
+                  "appId": "${CM_PROJECT_ID}", 
+                  "workflowId": "$1",
+                  "branch": "${CM_BRANCH}",
+                  "environment": { 
+                      "variables": { 
+                          "CLIENT_ID": "$2"
+                      },
+                      "groups": [
+                          "$3"
+                      ]
+                  }
+                }' \
+               https://api.codemagic.io/builds
+          }
+          CLIENTS=("itb" "flon") # put your clients IDs here
+          for CLIENT in ${CLIENTS[@]}; do
+              echo "CLIENT: $CLIENT"
+              build_client "android-workflow" $CLIENT "WL_${CLIENT}"
+              build_client "ios-workflow" $CLIENT "WL_${CLIENT}"
+          done
   android-workflow:
     name: Android Workflow
     instance_type: mac_mini_m1
