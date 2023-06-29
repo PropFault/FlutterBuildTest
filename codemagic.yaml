@@ -1,3 +1,16 @@
+definitions:
+  environment:
+    vars:
+      CLIENT_ASSETS_FOLDER: ./assets
+  scripts:
+    - &apply_client_assets
+      name: Apply client assets
+      script: |
+        mkdir ${CLIENT_ASSETS_FOLDER}/tmp
+        unzip ${CLIENT_ASSETS_FOLDER}/${CLIENT_ID}.zip -d ${CLIENT_ASSETS_FOLDER}/tmp/
+        cp -rf ${CLIENT_ASSETS_FOLDER}/tmp/ ./android/app/src/main/res/
+        cp -rf ${CLIENT_ASSETS_FOLDER}/tmp/ .
+
 workflows:
   trigger:
     environment:
@@ -66,6 +79,7 @@ workflows:
         script: | 
           flutter pub add change_app_package_name
           flutter pub run change_app_package_name:main $PACKAGE_NAME
+      - *apply_client_assets
       - name: Build AAB with Flutter
         script: |
           BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks="$GOOGLE_PLAY_TRACK") + 1))      
@@ -114,6 +128,7 @@ workflows:
         script: | 
           flutter test
         ignore_failure: true
+      - *apply_client_assets
       - name: Flutter build ipa
         script: | 
           flutter build ipa --release \
