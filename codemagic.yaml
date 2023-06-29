@@ -140,6 +140,7 @@ workflows:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
       - flutter_drive.log
+      - Podfile
     publishing:
       email:
         recipients:
