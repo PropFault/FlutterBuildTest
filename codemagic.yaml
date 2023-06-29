@@ -66,6 +66,9 @@ workflows:
       - name: Set up local.properties
         script: |
           echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
+      - name: Flutter Clean
+        script: |
+          flutter clean
       - name: Get Flutter packages
         script: |
           flutter packages pub get
@@ -116,6 +119,9 @@ workflows:
       - name: Set up code signing settings on Xcode project
         script: | 
           xcode-project use-profiles
+      - name: Flutter Clean
+        script: |
+          flutter clean
       - name: Get Flutter packages
         script: | 
           flutter packages pub get
