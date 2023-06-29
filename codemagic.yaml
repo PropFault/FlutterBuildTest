@@ -150,7 +150,7 @@ workflows:
       - /tmp/xcodebuild_logs/*.log
       - flutter_drive.log
       - build/ios/Podfile
-      - build/ios/*
+      - build/ios/Runner/Podfile
     publishing:
       email:
         recipients:
