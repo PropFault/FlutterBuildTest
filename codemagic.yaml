@@ -1,7 +1,8 @@
 definitions:
   environment:
-    vars:
-      CLIENT_ASSETS_FOLDER: ./assets
+    whitelabel: &whitelabel
+      vars:
+        CLIENT_ASSETS_FOLDER: ./assets
   scripts:
     - &apply_client_assets
       name: Apply client assets
@@ -53,6 +54,7 @@ workflows:
     labels:
       - ${CLIENT_ID} # Helpful when you open your Codemagic's builds page 
     environment:
+      <<: *whitelabel
       android_signing:
         - codemagic
       groups:
@@ -105,6 +107,7 @@ workflows:
     integrations:
       app_store_connect: codemagic
     environment:
+      <<: *whitelabel
       ios_signing:
         distribution_type: app_store
         bundle_identifier: eu.mtrack
