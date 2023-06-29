@@ -1,16 +1,12 @@
 definitions:
-  environment:
-    whitelabel: &whitelabel
-      vars:
-        CLIENT_ASSETS_FOLDER: ./assets
   scripts:
     - &apply_client_assets
       name: Apply client assets
       script: |
-        mkdir ${CLIENT_ASSETS_FOLDER}/tmp
-        unzip ${CLIENT_ASSETS_FOLDER}/${CLIENT_ID}.zip -d ${CLIENT_ASSETS_FOLDER}/tmp/
-        cp -rf ${CLIENT_ASSETS_FOLDER}/tmp/ ./android/app/src/main/res/
-        cp -rf ${CLIENT_ASSETS_FOLDER}/tmp/ .
+        mkdir ${CM_BUILD_DIR}/assets/tmp
+        unzip ${CM_BUILD_DIR}/assets/${CLIENT_ID}.zip -d ${CM_BUILD_DIR}/assets/tmp/
+        cp -rf ${CM_BUILD_DIR}/assets/tmp/android/res/ ${CM_BUILD_DIR}/android/app/src/main/res/
+        cp -rf ${CM_BUILD_DIR}/assets/tmp/ios/ ${CM_BUILD_DIR}/ios/Runner/Assets.xcassets/
 
 workflows:
   trigger:
@@ -54,7 +50,6 @@ workflows:
     labels:
       - ${CLIENT_ID} # Helpful when you open your Codemagic's builds page 
     environment:
-      <<: *whitelabel
       android_signing:
         - codemagic
       groups:
@@ -107,7 +102,6 @@ workflows:
     integrations:
       app_store_connect: codemagic
     environment:
-      <<: *whitelabel
       ios_signing:
         distribution_type: app_store
         bundle_identifier: eu.mtrack
