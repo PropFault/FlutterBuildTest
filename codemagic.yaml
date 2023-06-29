@@ -136,6 +136,9 @@ workflows:
           flutter test
         ignore_failure: true
       - *apply_client_assets
+      - name: Modify Pod file
+        script: |
+          find . -name "Podfile" -execdir echo -e "platform :ios, '11.0'\n$(cat Podfile)" > Podfile ";"
       - name: Flutter build ipa
         script: | 
           flutter build ipa --release \
